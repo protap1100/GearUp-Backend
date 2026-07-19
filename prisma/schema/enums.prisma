@@ -1,0 +1,9 @@
+enum Role {
+
+ CUSTOMER
+
+ PROVIDER
+
+ ADMIN
+
+}
