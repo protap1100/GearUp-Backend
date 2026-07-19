@@ -11,6 +11,8 @@ model User {
   phone       String?
   address     String?
 
+  status   UserStatus @default(ACTIVE)
+
   // status      UserStatus @default(ACTIVE)
 
   // Provider relation
