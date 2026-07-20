@@ -3,6 +3,7 @@ import { catchAsync } from "../../utilties/catchAsync";
 import httpsStatus from "http-status";
 import { authService } from "./auth.service";
 import { sendResponse } from "../../utilties/sendResponse";
+import { userServices } from "../user/user.service";
 
 const loginUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -52,7 +53,26 @@ const refreshToken = catchAsync(
   },
 );
 
+const getMyProfile = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const profile = await authService.getMyProfileFromDB(
+      req.user?.id as string,
+    );
+
+    console.log(req.user?.id);
+    res.send({
+      success: true,
+      statusCode: httpsStatus.OK,
+      message: "User profile fetched successfully",
+      data: {
+        profile,
+      },
+    });
+  },
+);
+
 export const authController = {
   loginUser,
   refreshToken,
+  getMyProfile
 };
