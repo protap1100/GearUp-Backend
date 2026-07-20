@@ -32,7 +32,6 @@ const registerUserIntoDB = async (payload: RegisterUserPayload) => {
   return userWithoutPassword;
 };
 
-
 export const userServices = {
   registerUserIntoDB,
 };

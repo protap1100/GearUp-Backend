@@ -1,29 +1,24 @@
 model User {
+  id           String      @id @default(uuid())
 
-  id          String   @id @default(uuid())
+  name         String
+  email        String      @unique
+  password     String
 
-  name        String
-  email       String   @unique
-  password    String
+  role         Role        @default(CUSTOMER)
+  status       UserStatus  @default(ACTIVE)
 
-  role        Role     @default(CUSTOMER)
+  phone        String?
+  address      String?
+  profilePhoto String?
 
-  phone       String?
-  address     String?
+  // Provider
+  gearItems    GearItem[]
 
-  status   UserStatus @default(ACTIVE)
+  // Customer
+  rentals      RentalOrder[]
+  reviews      Review[]
 
-  // status      UserStatus @default(ACTIVE)
-
-  // Provider relation
-  // gears       GearItem[]
-
-
-  // Customer relation
-  // rentals     RentalOrder[]
-
-  // reviews     Review[]
-
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
 }
