@@ -5,6 +5,8 @@ import config from "./config";
 import { userRoutes } from "./modules/user/user.route";
 import { authRoutes } from "./modules/auth/auth.routes";
 import { categoryRoutes } from "./modules/category/category.route";
+import { notFound } from "./middleware/notFound";
+import { globalErrorHandler } from "./middleware/globalErrorHandler";
 const app: Application = express();
 
 app.use(express.json());
@@ -24,4 +26,6 @@ app.get("/", (req, res) => {
 app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/categories", categoryRoutes);
+app.use(notFound);
+app.use(globalErrorHandler);
 export default app;
