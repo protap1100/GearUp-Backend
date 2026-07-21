@@ -7,6 +7,7 @@ import { authRoutes } from "./modules/auth/auth.routes";
 import { categoryRoutes } from "./modules/category/category.route";
 import { notFound } from "./middleware/notFound";
 import { globalErrorHandler } from "./middleware/globalErrorHandler";
+import { gearRoutes } from "./modules/gear/gear.route";
 const app: Application = express();
 
 app.use(express.json());
@@ -26,6 +27,8 @@ app.get("/", (req, res) => {
 app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/categories", categoryRoutes);
+app.use("/api/gear", gearRoutes);
+
 app.use(notFound);
 app.use(globalErrorHandler);
 export default app;
