@@ -1,7 +1,9 @@
 import { prisma } from "../../lib/prisma";
 import { IGear } from "../gear/gear.interface";
 
+// Create Gear
 const createGear = async (payload: IGear, providerId: string) => {
+  // Check category exists
   const category = await prisma.category.findUnique({
     where: {
       id: payload.categoryId,
@@ -17,13 +19,22 @@ const createGear = async (payload: IGear, providerId: string) => {
       ...payload,
       providerId,
     },
+    include: {
+      category: true,
+      provider: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+        },
+      },
+    },
   });
 
   return gear;
 };
 
-
-// Update gear
+// Update Gear
 const updateGear = async (
   id: string,
   providerId: string,
@@ -43,18 +54,40 @@ const updateGear = async (
     throw new Error("You can only update your own gear");
   }
 
+  // Validate category if changing category
+  if (payload.categoryId) {
+    const category = await prisma.category.findUnique({
+      where: {
+        id: payload.categoryId,
+      },
+    });
+
+    if (!category) {
+      throw new Error("Category not found");
+    }
+  }
+
   const updatedGear = await prisma.gearItem.update({
     where: {
       id,
     },
-
     data: payload,
+    include: {
+      category: true,
+      provider: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+        },
+      },
+    },
   });
 
   return updatedGear;
 };
 
-// Delete gear
+// Delete Gear
 const deleteGear = async (id: string, providerId: string) => {
   const gear = await prisma.gearItem.findUnique({
     where: {
@@ -69,14 +102,15 @@ const deleteGear = async (id: string, providerId: string) => {
   if (gear.providerId !== providerId) {
     throw new Error("You can only delete your own gear");
   }
-  await prisma.gearItem.delete({
+
+  const deletedGear = await prisma.gearItem.delete({
     where: {
       id,
     },
   });
-  return null;
-};
 
+  return deletedGear;
+};
 
 export const providerService = {
   createGear,
