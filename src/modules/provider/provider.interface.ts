@@ -1,4 +1,4 @@
-export interface IProvider {
+export interface IGear {
   name: string;
   description: string;
   brand?: string;
